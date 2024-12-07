@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/Ui/Screens/Splash_Screen.dart';
+import 'package:task_manager/Ui/Screens/base_bottom_navigationBar.dart';
 import 'package:task_manager/Ui/Screens/email_verification_screen.dart';
 
 class Login_Screen extends StatelessWidget {
@@ -38,7 +39,13 @@ class Login_Screen extends StatelessWidget {
                 Container(
                   width: double.infinity,
                   child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Base_NavigationBar(),
+                            ));
+                      },
                       child: const Icon(Icons.chevron_right_rounded)),
                 ),
                 const SizedBox(

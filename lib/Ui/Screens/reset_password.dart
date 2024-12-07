@@ -71,6 +71,5 @@ class Set_Password extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

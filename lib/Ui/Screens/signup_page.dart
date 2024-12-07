@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager/Ui/Screens/base_bottom_navigationBar.dart';
 import './Splash_Screen.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -54,7 +55,14 @@ class SignUpPage extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Base_NavigationBar(),
+                          ),
+                        );
+                      },
                       child: const Icon(Icons.chevron_right_rounded)),
                 ),
                 Row(
@@ -63,10 +71,11 @@ class SignUpPage extends StatelessWidget {
                   children: [
                     const Text('Have an account?'),
                     TextButton(
-                        style:
-                            TextButton.styleFrom(foregroundColor: Colors.green),
-                        onPressed: () {},
-                        child: const Text('Sign In'))
+                      style:
+                          TextButton.styleFrom(foregroundColor: Colors.green),
+                      onPressed: () {},
+                      child: const Text('Sign In'),
+                    ),
                   ],
                 )
               ],

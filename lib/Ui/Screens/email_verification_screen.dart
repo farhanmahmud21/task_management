@@ -31,7 +31,7 @@ class EmailVerificationScreen extends StatelessWidget {
                 const SizedBox(
                   height: 12,
                 ),
-                Container(
+                SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                       onPressed: () {
@@ -59,7 +59,7 @@ class EmailVerificationScreen extends StatelessWidget {
                                 builder: (context) => const Login_Screen(),
                               ));
                         },
-                        child: Text('Sign in'))
+                        child: const Text('Sign in'))
                   ],
                 )
               ],
