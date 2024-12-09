@@ -36,7 +36,7 @@ class Login_Screen extends StatelessWidget {
                 const SizedBox(
                   height: 12,
                 ),
-                Container(
+                SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                       onPressed: () {
