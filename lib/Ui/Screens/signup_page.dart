@@ -1,13 +1,13 @@
+// Ui/Screens/signup_page.dart
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'package:task_manager/Ui/Screens/base_bottom_navigationBar.dart';
+
 import 'package:task_manager/data/Models/networkResponse.dart';
 import 'package:task_manager/data/Services/network_caller.dart';
 import 'package:task_manager/data/utils/urls.dart';
 import './Splash_Screen.dart';
-import 'package:task_manager/data/utils/urls.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -23,9 +23,15 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _lastNameTEController = TextEditingController();
   TextEditingController _mobileTEController = TextEditingController();
   TextEditingController _passwordTEController = TextEditingController();
+  bool inProgress = false;
   Future<void> userSignup() async {
-    final NetworkResponseObject response = await NetworkCaller().postRequest(
-        'http://35.73.30.144:2005/api/v1/Registration', <String, dynamic>{
+    inProgress = true;
+    if (mounted) {
+      setState(() {});
+    }
+
+    final NetworkResponseObject response =
+        await NetworkCaller().postRequest(Urls.reg, <String, dynamic>{
       "email": _emailTEController.text.trim(),
       "firstName": _firstNameTEController.text.trim(),
       "lastName": _lastNameTEController.text.trim(),
@@ -34,15 +40,26 @@ class _SignUpPageState extends State<SignUpPage> {
     });
 
     if (response.isSuccess) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Registration Successful'),
-        backgroundColor: Colors.green,
-      ));
-      // Optionally navigate to login or home screen
+      if (mounted) {
+        setState(() {
+          inProgress = false;
+        });
+        _emailTEController.clear();
+        _firstNameTEController.clear();
+        _lastNameTEController.clear();
+        _mobileTEController.clear();
+        _passwordTEController.clear();
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Registration Successful'),
+          backgroundColor: Colors.green,
+        ));
+      }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Registration Failed'),
-      ));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Registration Failed'),
+        ));
+      }
     }
   }
 
@@ -112,7 +129,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       hintText: 'Mobile',
                     ),
                     validator: (String? value) {
-                      if ((value?.isEmpty ?? true) || value!.length == 11) {
+                      if ((value?.isEmpty ?? true) || value!.length != 11) {
                         return 'Enter your valid Mobile Number';
                       }
                       return null;
@@ -132,13 +149,18 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   SizedBox(
                     width: double.infinity,
-                    child: ElevatedButton(
-                        onPressed: () {
-                          if (_formState.currentState!.validate()) {
-                            userSignup();
-                          }
-                        },
-                        child: const Icon(Icons.chevron_right_rounded)),
+                    child: Visibility(
+                      visible: inProgress == false,
+                      replacement:
+                          Center(child: const CircularProgressIndicator()),
+                      child: ElevatedButton(
+                          onPressed: () {
+                            if (_formState.currentState!.validate()) {
+                              userSignup();
+                            }
+                          },
+                          child: const Icon(Icons.chevron_right_rounded)),
+                    ),
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
